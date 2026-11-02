@@ -1,5 +1,5 @@
 // Guarda la app para que abra sin internet y se actualice sola en segundo plano.
-const CACHE = 'mytraining-v1';
+const CACHE = 'mytraining-v6';
 const FILES = ['./', 'index.html', 'styles.css', 'config.js', 'exercises.js', 'app.js', 'db.js', 'sync.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'maskable-192.png', 'maskable-512.png', 'apple-touch-icon.png'];
 self.addEventListener('install', ev => { ev.waitUntil(caches.open(CACHE).then(c => Promise.allSettled(FILES.map(f => c.add(f)))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', ev => { ev.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

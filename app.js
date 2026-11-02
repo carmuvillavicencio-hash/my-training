@@ -188,7 +188,7 @@ function barChart(rows, { fmt = v => num(v), label = '', h = 150 } = {}) {
   const ticks = [0, max / 2, max];
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${e(label)}: ${rows.map(r => `${r.l} ${fmt(r.v)}`).join(', ')}">
     ${ticks.map(t => `<line class="grid" x1="${L}" x2="${W}" y1="${y(t)}" y2="${y(t)}"/><text x="${L - 6}" y="${y(t) + 4}" text-anchor="end">${e(fmtAxis(t))}</text>`).join('')}
-    ${rows.map((r, i) => { const x = L + i * (bw + gap), yy = y(r.v), bh = T + (H - T - B) - yy; return `<g data-tip="${e(r.tip || r.l + ': ' + fmt(r.v))}"><rect x="${x}" y="${T}" width="${bw}" height="${H - T - B}" fill="transparent"/>${r.v > 0 ? `<path d="M${x} ${yy + bh}V${yy + Math.min(4, bh)}q0-${Math.min(4, bh)} ${Math.min(4, bw / 2)}-${Math.min(4, bh)}H${x + bw - Math.min(4, bw / 2)}q${Math.min(4, bw / 2)} 0 ${Math.min(4, bw / 2)} ${Math.min(4, bh)}V${yy + bh}z" fill="${r.hi ? 'var(--mint)' : 'var(--mint-dim)'}"/>` : ''}<text x="${x + bw / 2}" y="${H - 5}" text-anchor="middle">${e(r.l)}</text></g>`; }).join('')}
+    ${rows.map((r, i) => { const x = L + i * (bw + gap), yy = y(r.v), bh = T + (H - T - B) - yy; return `<g data-tip="${e(r.tip || r.l + ': ' + fmt(r.v))}"><rect x="${x}" y="${T}" width="${bw}" height="${H - T - B}" fill="transparent"/>${r.v > 0 ? `<path d="M${x} ${yy + bh}V${yy + Math.min(4, bh)}q0-${Math.min(4, bh)} ${Math.min(4, bw / 2)}-${Math.min(4, bh)}H${x + bw - Math.min(4, bw / 2)}q${Math.min(4, bw / 2)} 0 ${Math.min(4, bw / 2)} ${Math.min(4, bh)}V${yy + bh}z" fill="${r.hi ? 'var(--accent)' : 'var(--accent-mid)'}"/>` : ''}<text x="${x + bw / 2}" y="${H - 5}" text-anchor="middle">${e(r.l)}</text></g>`; }).join('')}
   </svg>`;
 }
 const fmtAxis = v => v >= 10000 ? `${num(v / 1000, 1)} t` : num(v, 1);
@@ -205,9 +205,9 @@ function lineChart(rows, { fmt = v => num(v), label = '', h = 160, unit = '' } =
   const hitW = Math.max(22, (W - L - R) / rows.length);
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${e(label)}: ${rows.map(r => `${r.l} ${fmt(r.v)}`).join(', ')}">
     ${ticks.map(t => `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}"/><text x="${L - 6}" y="${y(t) + 4}" text-anchor="end">${e(fmtAxis(Math.round(t * 10) / 10))}</text>`).join('')}
-    ${rows.length > 1 ? `<path d="${path}L${x(rows.length - 1)} ${base}L${x(0)} ${base}z" fill="var(--mint)" opacity=".1"/>` : ''}
-    <path d="${path}" fill="none" stroke="var(--mint)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-    ${rows.map((r, i) => `<g data-tip="${e(r.l + ': ' + fmt(r.v))}"><rect x="${x(i) - hitW / 2}" y="${T}" width="${hitW}" height="${H - T - B}" fill="transparent"/>${i === rows.length - 1 ? `<circle cx="${x(i)}" cy="${y(r.v)}" r="5" fill="var(--pink)" stroke="#131514" stroke-width="2"/>` : rows.length <= 14 ? `<circle cx="${x(i)}" cy="${y(r.v)}" r="3" fill="var(--mint)"/>` : ''}</g>`).join('')}
+    ${rows.length > 1 ? `<path d="${path}L${x(rows.length - 1)} ${base}L${x(0)} ${base}z" fill="var(--accent)" opacity=".25"/>` : ''}
+    <path d="${path}" fill="none" stroke="var(--accent-line)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${rows.map((r, i) => `<g data-tip="${e(r.l + ': ' + fmt(r.v))}"><rect x="${x(i) - hitW / 2}" y="${T}" width="${hitW}" height="${H - T - B}" fill="transparent"/>${i === rows.length - 1 ? `<circle cx="${x(i)}" cy="${y(r.v)}" r="5" fill="var(--accent-line)" stroke="var(--surface)" stroke-width="2"/>` : rows.length <= 14 ? `<circle cx="${x(i)}" cy="${y(r.v)}" r="3" fill="var(--accent-line)"/>` : ''}</g>`).join('')}
     ${labelIdx.map(i => `<text x="${x(i)}" y="${H - 5}" text-anchor="${rows.length === 1 ? 'middle' : i === 0 ? 'start' : 'end'}">${e(rows[i].l)}</text>`).join('')}
   </svg>`;
 }
@@ -259,7 +259,7 @@ function homeView() {
     <div class="grid2">
       <section class="card"><header><h2>Tu semana</h2></header>
         <div class="week">${cal}</div>
-        <div class="legend"><span><i style="background:var(--mint)"></i>Hecho</span><span><i style="background:var(--raise);border:1px solid var(--ink3)"></i>Planificado</span><span><i style="background:var(--pink);border-radius:50%"></i>Running</span></div>
+        <div class="legend"><span><i style="background:var(--accent)"></i>Hecho</span><span><i style="background:var(--raise);border:1px solid var(--ink3)"></i>Planificado</span><span><i style="background:var(--ink);border-radius:50%"></i>Running</span></div>
         <div class="stats"><div class="stat"><small>Entrenamientos</small><b>${weekSess.length}<i>/${nPlan}</i></b></div><div class="stat"><small>Volumen</small><b>${kgs(vol)}</b></div><div class="stat"><small>Running</small><b>${num(km, 1)}<i>km</i></b></div></div>
         ${weekSess.length ? `<div class="wrapchips">${weekSess.slice().reverse().map(s => `<button class="chip sm" data-act="open-session" data-id="${s.id}">${DAY3[dayIdx(s.date)]}: ${e(routineShort(s))}</button>`).join('')}</div>` : ''}
       </section>
@@ -439,7 +439,7 @@ function picker(onAdd, existing) {
   const f = { q: '', group: '', muscle: '', type: '' }, picked = new Set(existing);
   const list = () => { const l = filterEx(f); return `<p class="count">${l.length} ejercicios</p>${l.length ? `<div class="list">${exRows(l, 'pick', picked)}</div>` : '<p class="empty">No aparece. Podés crearlo desde Ejercicios.</p>'}`; };
   const draw = () => { $('#pick-filters').innerHTML = filtersHtml(f, 'pk'); $('#pick-list').innerHTML = list(); };
-  openSheet(`<div class="sheet-head"><h2>Agregar ejercicios</h2><button data-act="close-sheet" style="color:var(--mint)">Listo</button></div><div class="sheet-body">
+  openSheet(`<div class="sheet-head"><h2>Agregar ejercicios</h2><button data-act="close-sheet" style="color:var(--ink)">Listo</button></div><div class="sheet-body">
     <div class="search">${I.search}<input class="input" id="pick-q" type="search" placeholder="Buscar" autocomplete="off"></div>
     <div id="pick-filters" style="display:flex;flex-direction:column;gap:8px"></div><div id="pick-list" style="display:flex;flex-direction:column;gap:8px"></div></div>`, true);
   draw();
@@ -670,7 +670,7 @@ function exProgressSheet(id, rehab) {
   const t = targetFor(id, rehab), sug = t ? suggest(t, hist[0].ex.sets, rehab) : (rehab ? suggest(null, null, true) : null);
   const hasW = asc.some(h => topW(h.ex.sets) > 0);
   openSheet(`<div class="sheet-head"><h2>${e(x.name)} ${rehab ? '<span class="pill rehab">Rehab</span>' : ''}</h2><button data-act="close-sheet">Cerrar</button></div><div class="sheet-body">
-    <div class="stats"><div class="stat"><small>Mejor marca</small><b style="font-size:24px">${setTxt(best).replace(' kg × ', ' × ')}</b><small>${dateShort(best.date)}</small></div><div class="stat"><small>Mejor volumen</small><b style="font-size:24px">${kgs(bestVol.v)}</b><small>${dateShort(bestVol.date)}</small></div><div class="stat"><small>Sesiones</small><b style="font-size:24px">${hist.length}</b></div></div>
+    <div class="stats"><div class="stat"><small>Mejor marca</small><b style="font-size:20px">${setTxt(best).replace(' kg × ', ' × ')}</b><small>${dateShort(best.date)}</small></div><div class="stat"><small>Mejor volumen</small><b style="font-size:20px">${kgs(bestVol.v)}</b><small>${dateShort(bestVol.date)}</small></div><div class="stat"><small>Sesiones</small><b style="font-size:20px">${hist.length}</b></div></div>
     ${sug ? `<div class="hint ${sug.kind}"><span>${e(sug.text)}</span></div>` : ''}
     ${hist[1] ? `<section class="card"><h2>Última sesión vs. la anterior</h2>${deltaHtml(compare(hist[0].ex.sets, hist[1].ex.sets))}</section>` : ''}
     <section class="card"><header><h2>${hasW ? 'Evolución de la carga' : 'Evolución de las repeticiones'}</h2><p>${hasW ? 'Mayor peso de cada sesión' : 'Total de repeticiones por sesión'}</p></header>${lineChart(asc.map(h => ({ l: dateShort(h.date), v: hasW ? topW(h.ex.sets) : totalReps(h.ex.sets) })), { fmt: v => hasW ? num(v) + ' kg' : num(v) + ' reps', label: 'Evolución' })}</section>
